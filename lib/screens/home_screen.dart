@@ -9,6 +9,9 @@ import 'hospital_screen.dart';
 import 'land_screen.dart';
 import 'crop_screen.dart';
 import 'complaint_screen.dart';
+import 'services_screen.dart';
+import 'directory_screen.dart';
+import 'about_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +21,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  final List<Map<String, dynamic>> menuItems = [
+  final List<Map<String, dynamic>> allMenuItems = [
+    {
+      'title': 'About Village',
+      'icon': Icons.info_outline,
+      'color': Colors.teal,
+      'screen': const AboutScreen(),
+    },
     {
       'title': 'Voters Information',
       'icon': Icons.people,
@@ -56,6 +65,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'screen': const CropScreen(),
     },
     {
+      'title': 'Village Services',
+      'icon': Icons.settings_suggest,
+      'color': Colors.indigo,
+      'screen': const ServicesScreen(),
+    },
+    {
+      'title': 'Local Directory',
+      'icon': Icons.contact_phone,
+      'color': Colors.teal,
+      'screen': const DirectoryScreen(),
+    },
+    {
       'title': 'Complaints',
       'icon': Icons.report_problem,
       'color': Colors.red,
@@ -68,6 +89,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'screen': const GalleryScreen(),
     },
   ];
+
+  late List<Map<String, dynamic>> filteredItems;
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredItems = allMenuItems;
+  }
+
+  void _filterItems(String query) {
+    setState(() {
+      filteredItems = allMenuItems
+          .where((item) =>
+              item['title'].toString().toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +123,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           child: Column(
             children: [
               const AnimatedHeader(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: _filterItems,
+                    decoration: InputDecoration(
+                      hintText: 'Search village info...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                  ),
+                ),
+              ).animate().fadeIn().slideY(begin: -0.2),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(16),
-                  itemCount: menuItems.length,
+                  itemCount: filteredItems.length,
                   itemBuilder: (context, index) {
-                    return _buildMenuItem(menuItems[index], index);
+                    return _buildMenuItem(filteredItems[index], index);
                   },
                 ),
               ),
@@ -102,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildMenuItem(Map<String, dynamic> item, int index) {
     return Container(
+      key: ValueKey(item['title']),
       margin: const EdgeInsets.only(bottom: 16),
       child: Material(
         color: Colors.transparent,
