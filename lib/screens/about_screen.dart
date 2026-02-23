@@ -39,7 +39,7 @@ class AboutScreen extends StatelessWidget {
             ).animate().fadeIn(delay: 200.ms).slideX(),
             const SizedBox(height: 12),
             Text(
-              VillageData.history,
+              VillageData.villageInfo['history'],
               style: const TextStyle(fontSize: 16, height: 1.6),
             ).animate().fadeIn(delay: 400.ms),
             const SizedBox(height: 24),
@@ -47,10 +47,10 @@ class AboutScreen extends StatelessWidget {
               context,
               'Village Statistics',
               [
-                'Total Area: ${VillageData.geographicInfo['total_area']}',
-                'Total Population: ${VillageData.population}',
-                'Total Houses: ${VillageData.houses}',
-                'Literacy Rate: ${VillageData.literacyRate}',
+                'Total Area: ${VillageData.villageInfo['area']}',
+                'Total Population: ${VillageData.villageInfo['totalPopulation']}',
+                'Total Houses: ${VillageData.villageInfo['numberOfHouses']}',
+                'Literacy Rate: ${VillageData.villageInfo['literacyRate']}',
               ],
               Icons.analytics,
             ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2),
