@@ -15,20 +15,24 @@ class AnimatedHeader extends StatelessWidget {
         children: [
           Text(
             "Welcome to",
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: const Color(0xFF64748B),
             ),
           ),
           DefaultTextStyle(
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.green[800],
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF065F46),
+              letterSpacing: -0.5,
             ),
             child: AnimatedTextKit(
               animatedTexts: [
-                TypewriterAnimatedText(VillageData.villageInfo['name']),
+                TypewriterAnimatedText(
+                  VillageData.villageInfo['name'],
+                  speed: const Duration(milliseconds: 60),
+                ),
               ],
               isRepeatingAnimation: false,
             ),
@@ -38,7 +42,9 @@ class AnimatedHeader extends StatelessWidget {
             height: 4,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.green,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF059669), Color(0xFF34D399)],
+              ),
               borderRadius: BorderRadius.circular(2),
             ),
           ),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../widgets/animated_header.dart';
@@ -25,67 +27,67 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     {
       'title': 'About Village',
       'icon': Icons.info_outline,
-      'color': Colors.teal,
+      'color': const Color(0xFF0D9488),
       'screen': const AboutScreen(),
     },
     {
       'title': 'Voters Information',
       'icon': Icons.people,
-      'color': Colors.blue,
+      'color': const Color(0xFF2563EB),
       'screen': const VoterScreen(),
     },
     {
       'title': 'Gram Panchayat',
       'icon': Icons.location_city,
-      'color': Colors.green,
+      'color': const Color(0xFF059669),
       'screen': const GrampanchayatScreen(),
     },
     {
       'title': 'Schools',
       'icon': Icons.school,
-      'color': Colors.orange,
+      'color': const Color(0xFFEA580C),
       'screen': const SchoolScreen(),
     },
     {
       'title': 'Hospitals',
       'icon': Icons.local_hospital,
-      'color': Colors.red,
+      'color': const Color(0xFFDC2626),
       'screen': const HospitalScreen(),
     },
     {
       'title': 'Lands',
       'icon': Icons.landscape,
-      'color': Colors.brown,
+      'color': const Color(0xFF92400E),
       'screen': const LandScreen(),
     },
     {
       'title': 'Crops',
       'icon': Icons.grass,
-      'color': Colors.green,
+      'color': const Color(0xFF16A34A),
       'screen': const CropScreen(),
     },
     {
       'title': 'Village Services',
       'icon': Icons.settings_suggest,
-      'color': Colors.indigo,
+      'color': const Color(0xFF4F46E5),
       'screen': const ServicesScreen(),
     },
     {
       'title': 'Local Directory',
       'icon': Icons.contact_phone,
-      'color': Colors.teal,
+      'color': const Color(0xFF0891B2),
       'screen': const DirectoryScreen(),
     },
     {
       'title': 'Complaints',
       'icon': Icons.report_problem,
-      'color': Colors.red,
+      'color': const Color(0xFFE11D48),
       'screen': const ComplaintScreen(),
     },
     {
       'title': 'Village Gallery',
       'icon': Icons.photo_library,
-      'color': Colors.deepPurple,
+      'color': const Color(0xFF7C3AED),
       'screen': const GalleryScreen(),
     },
   ];
@@ -119,10 +121,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.green.shade50, Colors.white],
+            colors: [Color(0xFFECFDF5), Color(0xFFF8FAF9)],
           ),
         ),
         child: SafeArea(
@@ -269,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-          ).animate().fadeIn(delay: (100 * index).ms).slideX(),
+          ).animate().fadeIn(delay: math.min(50 * index, 350).ms).slideX(),
         ),
       ),
     );
