@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../widgets/animated_header.dart';
+import '../main.dart';
 import 'gallery_screen.dart';
 import 'voter_screen.dart';
 import 'grampanchayat_screen.dart';
@@ -25,67 +26,67 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     {
       'title': 'About Village',
       'icon': Icons.info_outline,
-      'color': Colors.teal,
+      'color': kPrimaryRed,
       'screen': const AboutScreen(),
     },
     {
       'title': 'Voters Information',
       'icon': Icons.people,
-      'color': Colors.blue,
+      'color': const Color(0xFF4A4A4A),
       'screen': const VoterScreen(),
     },
     {
       'title': 'Gram Panchayat',
       'icon': Icons.location_city,
-      'color': Colors.green,
+      'color': kDarkBg,
       'screen': const GrampanchayatScreen(),
     },
     {
       'title': 'Schools',
       'icon': Icons.school,
-      'color': Colors.orange,
+      'color': const Color(0xFF6B7280),
       'screen': const SchoolScreen(),
     },
     {
       'title': 'Hospitals',
       'icon': Icons.local_hospital,
-      'color': Colors.red,
+      'color': kPrimaryRed,
       'screen': const HospitalScreen(),
     },
     {
       'title': 'Lands',
       'icon': Icons.landscape,
-      'color': Colors.brown,
+      'color': const Color(0xFF4A4A4A),
       'screen': const LandScreen(),
     },
     {
       'title': 'Crops',
       'icon': Icons.grass,
-      'color': Colors.green,
+      'color': const Color(0xFF6B7280),
       'screen': const CropScreen(),
     },
     {
       'title': 'Village Services',
       'icon': Icons.settings_suggest,
-      'color': Colors.indigo,
+      'color': kDarkBg,
       'screen': const ServicesScreen(),
     },
     {
       'title': 'Local Directory',
       'icon': Icons.contact_phone,
-      'color': Colors.teal,
+      'color': kPrimaryRed,
       'screen': const DirectoryScreen(),
     },
     {
       'title': 'Complaints',
       'icon': Icons.report_problem,
-      'color': Colors.red,
+      'color': const Color(0xFF4A4A4A),
       'screen': const ComplaintScreen(),
     },
     {
       'title': 'Village Gallery',
       'icon': Icons.photo_library,
-      'color': Colors.deepPurple,
+      'color': const Color(0xFF6B7280),
       'screen': const GalleryScreen(),
     },
   ];
@@ -118,13 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.green.shade50, Colors.white],
-          ),
-        ),
+        color: kLightBg,
         child: SafeArea(
           child: Column(
             children: [
@@ -134,11 +129,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(14),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 10,
+                        color: Colors.black.withValues(alpha: 0.04),
+                        blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
                     ],
@@ -148,10 +143,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     onChanged: _filterItems,
                     decoration: InputDecoration(
                       hintText: 'Search village info...',
-                      prefixIcon: const Icon(Icons.search),
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
                       suffixIcon: _searchController.text.isNotEmpty
                           ? IconButton(
-                              icon: const Icon(Icons.clear),
+                              icon: Icon(Icons.clear, color: Colors.grey[400]),
                               onPressed: () {
                                 _searchController.clear();
                                 _filterItems('');
@@ -159,32 +155,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             )
                           : null,
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                   ),
-                ),
-              ).animate().fadeIn().slideY(begin: -0.2),
+                ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2, curve: Curves.easeOutCubic),
+              ),
               Expanded(
                 child: filteredItems.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.search_off,
-                                size: 64, color: Colors.grey.shade400),
+                            Icon(Icons.search_off, size: 64, color: Colors.grey.shade300),
                             const SizedBox(height: 12),
                             Text(
                               'No results found',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey.shade600,
-                              ),
+                              style: TextStyle(fontSize: 16, color: Colors.grey[500]),
                             ),
                           ],
                         ),
                       )
                     : ListView.builder(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                         itemCount: filteredItems.length,
                         itemBuilder: (context, index) {
                           return _buildMenuItem(filteredItems[index], index);
@@ -199,77 +191,75 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildMenuItem(Map<String, dynamic> item, int index) {
+    final color = item['color'] as Color;
     return Container(
       key: ValueKey(item['title']),
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => item['screen']),
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => item['screen'],
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                transitionDuration: const Duration(milliseconds: 300),
+              ),
             );
           },
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: (item['color'] as Color).withValues(alpha: 0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.shade100),
             ),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: (item['color'] as Color).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(15),
+                    color: color.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     item['icon'] as IconData,
-                    color: item['color'] as Color,
-                    size: 30,
+                    color: color,
+                    size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 14),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item['title'] as String,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Tap to view details',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    item['title'] as String,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: kDarkBg,
+                    ),
                   ),
                 ),
                 Icon(
-                  Icons.arrow_forward_ios,
-                  color: item['color'] as Color,
-                  size: 20,
+                  Icons.chevron_right,
+                  color: Colors.grey[300],
+                  size: 22,
                 ),
               ],
             ),
-          ).animate().fadeIn(delay: (100 * index).ms).slideX(),
+          ).animate().fadeIn(
+            delay: (60 * index).ms,
+            duration: 350.ms,
+            curve: Curves.easeOutCubic,
+          ).slideX(
+            delay: (60 * index).ms,
+            duration: 350.ms,
+            begin: 0.08,
+            curve: Curves.easeOutCubic,
+          ),
         ),
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import '../main.dart';
 
 class GalleryScreen extends StatelessWidget {
   const GalleryScreen({super.key});
@@ -19,13 +21,9 @@ class GalleryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Village Gallery'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Village Gallery')),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -38,26 +36,30 @@ class GalleryScreen extends StatelessWidget {
             return GestureDetector(
               onTap: () => _showFullScreenImage(context, images[index]),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
                 child: Image.network(
                   images[index],
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.broken_image, color: Colors.grey),
+                      color: Colors.grey[100],
+                      child: Icon(Icons.broken_image, color: Colors.grey[300]),
                     );
                   },
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Container(
-                      color: Colors.grey[200],
-                      child: const Center(child: CircularProgressIndicator()),
+                      color: Colors.grey[100],
+                      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
                     );
                   },
                 ),
               ),
-            );
+            ).animate().fadeIn(
+              delay: (40 * index).ms,
+              duration: 300.ms,
+              curve: Curves.easeOutCubic,
+            ).scale(begin: const Offset(0.95, 0.95));
           },
         ),
       ),
@@ -68,7 +70,7 @@ class GalleryScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
+        backgroundColor: kDarkBg,
         insetPadding: const EdgeInsets.all(10),
         child: Stack(
           alignment: Alignment.topRight,
@@ -83,7 +85,7 @@ class GalleryScreen extends StatelessWidget {
               right: 10,
               top: 10,
               child: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                icon: const Icon(Icons.close, color: Colors.white, size: 28),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),

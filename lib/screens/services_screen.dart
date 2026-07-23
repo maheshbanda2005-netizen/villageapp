@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../models/village_data.dart';
+import '../main.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
@@ -8,77 +9,79 @@ class ServicesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Village Services'),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Village Services')),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: VillageData.servicesInfo.length,
         itemBuilder: (context, index) {
-          final service = VillageData.servicesInfo[index];
-          return _buildServiceCard(service, index);
+          return _buildServiceCard(VillageData.servicesInfo[index], index);
         },
       ),
     );
   }
 
   Widget _buildServiceCard(Map<String, dynamic> service, int index) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.teal.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Icon(_getIcon(service['icon']), color: Colors.teal, size: 30),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        service['title'],
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          service['status'],
-                          style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 12),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 30),
-            Text(
-              service['description'],
-              style: TextStyle(color: Colors.grey[700], height: 1.5),
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade100),
       ),
-    ).animate().fadeIn(delay: (100 * index).ms).slideX();
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: kPrimaryRed.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(_getIcon(service['icon']), color: kPrimaryRed, size: 24),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      service['title'],
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: kDarkBg),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: kPrimaryRed.withValues(alpha: 0.06),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        service['status'],
+                        style: const TextStyle(color: kPrimaryRed, fontWeight: FontWeight.w600, fontSize: 11),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Divider(color: Colors.grey.shade100, height: 1),
+          const SizedBox(height: 14),
+          Text(
+            service['description'],
+            style: TextStyle(color: Colors.grey[600], height: 1.5, fontSize: 14),
+          ),
+        ],
+      ),
+    ).animate().fadeIn(
+      delay: (80 * index).ms,
+      duration: 350.ms,
+      curve: Curves.easeOutCubic,
+    ).slideX(begin: 0.03);
   }
 
   IconData _getIcon(String iconName) {

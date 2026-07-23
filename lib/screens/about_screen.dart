@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../models/village_data.dart';
+import '../main.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -8,40 +9,35 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About Kaprai Pally'),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('About Kaprai Pally')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  'https://picsum.photos/seed/village_main/600/400',
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ).animate().scale().fadeIn(),
-            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                'https://picsum.photos/seed/village_main/600/400',
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ).animate().scale(duration: 500.ms, curve: Curves.easeOutCubic).fadeIn(),
             const SizedBox(height: 24),
             Text(
               'History & Heritage',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green.shade800,
-                  ),
-            ).animate().fadeIn(delay: 200.ms).slideX(),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: kDarkBg,
+              ),
+            ).animate().fadeIn(delay: 200.ms, curve: Curves.easeOutCubic).slideX(begin: 0.02),
             const SizedBox(height: 12),
             Text(
               VillageData.villageInfo['history'],
-              style: const TextStyle(fontSize: 16, height: 1.6),
-            ).animate().fadeIn(delay: 400.ms),
+              style: TextStyle(fontSize: 15, height: 1.7, color: Colors.grey[700]),
+            ).animate().fadeIn(delay: 300.ms, duration: 500.ms),
             const SizedBox(height: 24),
             _buildInfoCard(
               context,
@@ -53,7 +49,7 @@ class AboutScreen extends StatelessWidget {
                 'Literacy Rate: ${VillageData.villageInfo['literacyRate']}',
               ],
               Icons.analytics,
-            ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2),
+            ).animate().fadeIn(delay: 400.ms, curve: Curves.easeOutCubic).slideY(begin: 0.05),
           ],
         ),
       ),
@@ -61,37 +57,48 @@ class AboutScreen extends StatelessWidget {
   }
 
   Widget _buildInfoCard(BuildContext context, String title, List<String> details, IconData icon) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Colors.green),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade100),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: kPrimaryRed, size: 22),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: kDarkBg),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Divider(color: Colors.grey.shade100, height: 1),
+          const SizedBox(height: 12),
+          ...details.map((detail) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: kPrimaryRed,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(detail, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+                  ],
                 ),
-              ],
-            ),
-            const Divider(),
-            ...details.map((detail) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle_outline, size: 16, color: Colors.green),
-                      const SizedBox(width: 8),
-                      Text(detail, style: const TextStyle(fontSize: 15)),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+              )),
+        ],
       ),
     );
   }

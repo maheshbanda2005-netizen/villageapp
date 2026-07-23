@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../main.dart';
 
 class ComplaintScreen extends StatefulWidget {
   const ComplaintScreen({super.key});
@@ -36,7 +37,8 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Complaint submitted successfully!'),
-        backgroundColor: Colors.green,
+        backgroundColor: kDarkBg,
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -44,11 +46,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register Complaint'),
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Register Complaint')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -58,21 +56,20 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             children: [
               const Text(
                 "Voice your concerns",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ).animate().fadeIn(),
-              const SizedBox(height: 10),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: kDarkBg),
+              ).animate().fadeIn(duration: 400.ms, curve: Curves.easeOutCubic),
+              const SizedBox(height: 8),
               const Text(
-                "Submit your complaint directly to the Gram Panchayat. We will look into it as soon as possible.",
+                "Submit your complaint directly to the Gram Panchayat.",
                 style: TextStyle(color: Colors.grey),
-              ).animate().fadeIn(delay: 200.ms),
-              const SizedBox(height: 30),
+              ).animate().fadeIn(delay: 150.ms, curve: Curves.easeOutCubic),
+              const SizedBox(height: 28),
               TextFormField(
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(
                   labelText: 'Your Name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: Icon(Icons.person_outline),
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -80,14 +77,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   }
                   return null;
                 },
-              ).animate().fadeIn(delay: 300.ms),
-              const SizedBox(height: 20),
+              ).animate().fadeIn(delay: 200.ms, curve: Curves.easeOutCubic).slideY(begin: 0.03),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+                  prefixIcon: Icon(Icons.phone_outlined),
                 ),
                 keyboardType: TextInputType.phone,
                 inputFormatters: [
@@ -103,14 +99,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   }
                   return null;
                 },
-              ).animate().fadeIn(delay: 400.ms),
-              const SizedBox(height: 20),
+              ).animate().fadeIn(delay: 300.ms, curve: Curves.easeOutCubic).slideY(begin: 0.03),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _subjectController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   labelText: 'Subject',
-                  border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.subject),
                 ),
                 validator: (value) {
@@ -119,14 +114,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   }
                   return null;
                 },
-              ).animate().fadeIn(delay: 500.ms),
-              const SizedBox(height: 20),
+              ).animate().fadeIn(delay: 400.ms, curve: Curves.easeOutCubic).slideY(begin: 0.03),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: const InputDecoration(
                   labelText: 'Detailed Description',
-                  border: OutlineInputBorder(),
                   alignLabelWithHint: true,
                 ),
                 maxLines: 5,
@@ -136,21 +130,16 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   }
                   return null;
                 },
-              ).animate().fadeIn(delay: 600.ms),
-              const SizedBox(height: 30),
+              ).animate().fadeIn(delay: 500.ms, curve: Curves.easeOutCubic).slideY(begin: 0.03),
+              const SizedBox(height: 28),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: const Text("Submit Complaint", style: TextStyle(fontSize: 18)),
+                  child: const Text("Submit Complaint", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
-              ).animate().fadeIn(delay: 700.ms).scale(),
+              ).animate().fadeIn(delay: 600.ms, curve: Curves.easeOutCubic).scale(begin: const Offset(0.97, 0.97)),
             ],
           ),
         ),
