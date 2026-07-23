@@ -24,20 +24,35 @@ class DirectoryScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: _getCategoryColor(entry['type']).withOpacity(0.1),
+                backgroundColor: _getCategoryColor(entry['type']).withValues(alpha: 0.1),
                 child: Icon(_getCategoryIcon(entry['type']), color: _getCategoryColor(entry['type'])),
               ),
               title: Text(entry['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text(entry['contact']),
               trailing: IconButton(
                 icon: const Icon(Icons.call, color: Colors.green),
-                onPressed: () => launchUrl(Uri.parse('tel:${entry['contact']}')),
+                onPressed: () => _makeCall(context, entry['contact']),
               ),
             ),
           ).animate().fadeIn(delay: (50 * index).ms).scale();
         },
       ),
     );
+  }
+
+  Future<void> _makeCall(BuildContext context, String contact) async {
+    final uri = Uri(scheme: 'tel', path: contact);
+    bool launched = false;
+    try {
+      launched = await launchUrl(uri);
+    } catch (_) {
+      launched = false;
+    }
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not call $contact')),
+      );
+    }
   }
 
   Color _getCategoryColor(String type) {

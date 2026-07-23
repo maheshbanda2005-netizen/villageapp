@@ -73,7 +73,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
                   const SizedBox(height: 20),
                   ...VillageData.schoolInfo.map((school) {
                     return _buildSchoolCard(school);
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
